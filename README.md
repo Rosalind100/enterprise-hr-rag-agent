@@ -80,6 +80,7 @@ plaintext
 隔离项目依赖，避免版本冲突：
 # 创建虚拟环境
 python -m venv venv
+
 # 激活虚拟环境
 # Windows
 venv\Scripts\activate
@@ -111,7 +112,6 @@ DeepSeek：https://platform.deepseek.com/
 🚀 项目运行（两种模式）
 ⚠️ 重要前置规则：首次运行 / 更新知识库后，必须先执行控制台模式生成向量库，再启动 FastAPI 接口！
 模式一：本地控制台交互（测试 / 初始化向量库）
-适合本地调试、手动问答、向量库初始化：
 python main.py
 运行成功后功能：
 直接输入问题进行问答；
