@@ -78,18 +78,14 @@ plaintext
 ## ⚙️ 前置环境准备
 ### 1. 虚拟环境（推荐）
 隔离项目依赖，避免版本冲突：
-```bash
 # 创建虚拟环境
 python -m venv venv
-
 # 激活虚拟环境
 # Windows
 venv\Scripts\activate
 # Mac / Linux
 source venv/bin/activate
 2. 安装依赖
-bash
-运行
 pip install -r requirements.txt
 3. 配置环境变量（关键步骤）
 在项目根目录新建 .env 文件，填入两大模型平台密钥（缺一不可）：
@@ -116,8 +112,6 @@ DeepSeek：https://platform.deepseek.com/
 ⚠️ 重要前置规则：首次运行 / 更新知识库后，必须先执行控制台模式生成向量库，再启动 FastAPI 接口！
 模式一：本地控制台交互（测试 / 初始化向量库）
 适合本地调试、手动问答、向量库初始化：
-bash
-运行
 python main.py
 运行成功后功能：
 直接输入问题进行问答；
@@ -125,8 +119,6 @@ python main.py
 输入 quit 正常退出程序。
 模式二：FastAPI 接口服务（线上 / 对接第三方系统）
 1. 启动命令
-bash
-运行
 # 开发环境（热重载，修改代码自动重启）
 uvicorn app:app --reload --host 0.0.0.0 --port 8000
 
@@ -142,8 +134,6 @@ uvicorn app:app --host 0.0.0.0 --port 8000 --workers 2
 接口地址：/health
 作用：检测服务状态、RAG 链是否初始化完成
 调用示例：
-bash
-运行
 curl http://127.0.0.1:8000/health
 正常响应：
 json
@@ -178,8 +168,6 @@ json
   "history": "用户：入职需要准备什么材料\n助手：1.身份证原件及复印件2份；2.学历证书原件及复印件；3.一寸白底照片2张；4.本人银行卡。"
 }
 Curl 调用示例
-bash
-运行
 curl -X POST "http://127.0.0.1:8000/chat" \
 -H "Content-Type: application/json" \
 -d '{
