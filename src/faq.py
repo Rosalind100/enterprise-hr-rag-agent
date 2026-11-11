@@ -21,20 +21,39 @@ def get_faq_reply(msg):
         msg = msg.strip().lower()
         logger.debug(f"FAQ匹配：{msg}")
 
-        if "入职" in msg:
-            if any(i in msg for i in ["材料", "准备"]):
+        # 1. 入职相关
+        if "入职" in msg or "报到" in msg:
+            if any(i in msg for i in ["材料", "准备", "带", "拿", "东西"]):
                 logger.info("FAQ命中：入职材料")
                 return FAQ_CACHE["入职需要准备什么材料"]
-            if any(i in msg for i in ["报到", "地点"]):
+            if any(i in msg for i in ["地点", "时间", "几点", "哪里"]):
                 logger.info("FAQ命中：入职报到")
                 return FAQ_CACHE["入职报到时间地点"]
 
-        if any(i in msg for i in ["补卡", "忘记打卡"]):
+        # 2. 考勤相关
+        if any(i in msg for i in ["补卡", "忘记打卡", "漏打卡"]):
+            logger.info("FAQ命中：补卡")
             return FAQ_CACHE["补卡流程"]
-        if "迟到" in msg:
+        if any(i in msg for i in ["迟到", "晚到", "打卡晚", "扣钱"]):
+            logger.info("FAQ命中：迟到")
             return FAQ_CACHE["迟到处理"]
-        if any(i in msg for i in ["报销", "差旅"]):
-            return FAQ_CACHE["差旅报销标准是什么"]
+
+        # 3. 报销/差旅相关
+        if any(i in msg for i in ["报销", "差旅", "出差", "住宿", "餐补", "补贴"]):
+            # 【必须是这行！】如果字数超过 15，放行
+            if len(msg) > 15:
+                logger.info("长句放行：跳过 FAQ，交由 RAG 处理")
+                return None
+                
+            if any(i in msg for i in ["丢", "没票", "发票"]):
+                logger.info("FAQ命中：报销发票")
+                return FAQ_CACHE["报销发票丢了怎么办"]
+            if any(i in msg for i in ["到账", "多久", "几天"]):
+                logger.info("FAQ命中：报销到账")
+                return FAQ_CACHE["报销多久到账"]
+            
+            logger.info("FAQ命中：差旅标准")
+            return FAQ_CACHE["报销发票丢了怎么办"]
 
         logger.info("FAQ未命中")
         return None

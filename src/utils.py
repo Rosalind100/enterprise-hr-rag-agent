@@ -3,11 +3,7 @@ import os
 
 def get_start_opening():
     """欢迎语"""
-    return """
-🏢 人事制度问答助手
-快捷提问：入职材料 | 补卡流程 | 报销标准 | 请假流程
-输入 quit 退出对话
-"""
+    return "🏢 人事制度问答助手\n快捷提问：入职材料 | 补卡流程 | 报销标准 | 请假流程\n输入 quit 退出对话"
 
 def empty_answer_guard():
     """无答案兜底"""

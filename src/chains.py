@@ -28,13 +28,13 @@ def build_rag_chain(vector_db):
             """格式化检索到的文档"""
             try:
                 if not docs:
-                    logger.warning("当前分类下未检索到相关文档")
+                    logger.warning("⚠️ 当前分类下未检索到任何文档，请检查向量库是否已正确构建")
                     return "无相关资料"
-                # 打印命中的文档（调试用）
+                # 打印命中的文档信息（调试用）
                 for idx, doc in enumerate(docs):
                     file_name = os.path.basename(doc.metadata.get("source", ""))
                     cat = doc.metadata.get("category", "")
-                    logger.debug(f"命中文档{idx+1}：{file_name} | 分类：{cat}")
+                    logger.info(f"  命中文档{idx+1}：{file_name} | 分类：{cat} | 长度：{len(doc.page_content)}字")
                 return "\n\n".join(d.page_content for d in docs)
             except Exception as e:
                 logger.error(f"文档格式化失败：{str(e)}")
@@ -68,6 +68,8 @@ def build_rag_chain(vector_db):
                 retriever = get_retriever_by_category(vector_db, target_category)
                 docs = retriever.invoke(query)
                 logger.info(f"检索到 {len(docs)} 条【{target_category}】分类文档")
+                if len(docs) == 0:
+                    logger.warning(f"⚠️ 向量库中 category={target_category} 的文档为 0 条！请运行 main.py 重建向量库。")
                 context = format_docs(docs)
 
                 # 4. 生成回答
